@@ -1,51 +1,50 @@
-# Deploy — presale funnel → https://robotics.aorila.com
+# Deploy — presale funnel (GitHub Pages)
 
-Static site (no build step). Code lives in this repo (`nbaldwin098/robot-funnel`).
-The waitlist backend is already wired (Supabase `robot_waitlist`, anon
-INSERT-only — see `INTEGRATION.md`). These are the only steps left, all on
-Nicholas's side (no Render API key on file, so the dashboard clicks are manual).
+The funnel is deployed via **GitHub Pages** — no Render service needed.
+Pushes to `main` redeploy automatically. `.nojekyll` bypasses Jekyll.
 
-## 1. Create the Render static site (~10 clicks)
+## Live setup
 
-1. Go to **dashboard.render.com** → **New +** → **Static Site**.
-2. Connect GitHub if prompted → select **`nbaldwin098/robot-funnel`** → branch `main`.
-3. Build Command: *(leave empty)*. Publish Directory: `.`
-4. Name the service, e.g. **`aorila-robot-funnel`** → **Create Static Site**.
-5. Render assigns a URL like `https://aorila-robot-funnel.onrender.com`
-   (your exact hostname may differ — note it, you need it for DNS).
+| Repo | Custom domain |
+|------|---------------|
+| `nbaldwin098/robot-funnel` | `https://robotics.aorila.com` |
+| `nbaldwin098/robot-funnel-labs` | `https://robotics.aorilalabs.com` |
 
-## 2. Attach the custom domain in Render
+## DNS — add at the registrar
 
-1. In the new service → **Settings** → **Custom Domains** → **Add Custom Domain**.
-2. Enter **`robotics.aorila.com`**.
-3. Render shows the DNS target to point at — it is the `*.onrender.com`
-   hostname from step 1.5. Copy it exactly.
+| Domain | Type | Host / Name | Value |
+|--------|------|-------------|-------|
+| aorila.com | CNAME | `robotics` | `nbaldwin098.github.io` |
+| aorilalabs.com | CNAME | `robotics` | `nbaldwin098.github.io` |
 
-## 3. DNS — add this ONE record at your registrar for `aorila.com`
+After DNS propagates, GitHub issues the HTTPS certificate automatically
+(usually under an hour), then HTTPS gets enforced on both domains.
 
-| Type  | Host / Name | Value |
-|-------|-------------|-------|
-| CNAME | `robotics`  | `aorila-robot-funnel.onrender.com` |
+## Render cleanup (one click)
 
-- **Value** = the exact `*.onrender.com` hostname Render displays in
-  Settings → Custom Domains (use yours verbatim if it differs from the example).
-- TTL: automatic / default.
-- No A record, no www, nothing else needed.
+`robotics.aorila.com` was added as a custom domain on the **aorila-web**
+Render service — remove it there so traffic goes to the funnel, not the
+main site. Do not re-add these subdomains to Render.
 
-## 4. Verify
+## Waitlist backend
 
-1. Wait for Render to verify DNS and issue the certificate (automatic, usually minutes).
-2. Load `https://robotics.aorila.com` on desktop + a phone.
-3. Submit a test email with `?utm_source=test&utm_medium=verify&utm_campaign=go-live`
-   appended to the URL.
-4. Confirm the row in Supabase (`robot_waitlist` table, Atraly project),
-   then **delete the test row**.
+Supabase `robot_waitlist` table, anon INSERT-only RLS (public can submit,
+nobody can read emails). Wiring: `assets/js/main.js` → `WAITLIST_CONFIG`.
+Full guide in `INTEGRATION.md`.
+
+## Verify go-live
+
+1. Load both URLs on desktop + a phone.
+2. Submit a test email with `?utm_source=test&utm_medium=verify&utm_campaign=go-live`.
+3. Confirm the row in Supabase (`robot_waitlist` table), then **delete the test row**.
+
+## When the POV commercial is shot
+
+Replace the `.video-frame` placeholder in `index.html` with a `<video>`
+tag. Keep the caption "Industrial design concept — prototype in build."
+until real-hardware footage exists.
 
 ## Notes
 
-- HTTPS is terminated automatically by Render (and by Cloudflare Pages /
-  Netlify / Vercel if you host there instead — any static host works, the DNS
-  value just changes to that host's target).
-- The robot story stays off `aorila.com` for now; `aorila.com/robot` is reserved
-  for the eventual merge.
+- The robot story stays off `aorila.com` for now.
 - Do not add payment/reservation flows — counsel review gates that stage.
