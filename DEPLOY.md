@@ -1,30 +1,22 @@
-# Deploy — presale funnel (GitHub Pages)
+# Deploy — presale funnel (Render)
 
-The funnel is deployed via **GitHub Pages** — no Render service needed.
-Pushes to `main` redeploy automatically. `.nojekyll` bypasses Jekyll.
+The funnel is deployed as a **Render Static Site** — no build step.
+Pushes to `main` on the connected repo redeploy automatically.
 
 ## Live setup
 
-| Repo | Custom domain |
-|------|---------------|
-| `nbaldwin098/robot-funnel` | `https://robotics.aorila.com` |
-| `nbaldwin098/robot-funnel-labs` | `https://robotics.aorilalabs.com` |
+| Render service | Repo | Custom domains |
+|----------------|------|----------------|
+| `aorila-robotics-site` | `nbaldwin098/robot-funnel` (branch `main`, build command empty, publish dir `.`) | `robotics.aorila.com`, `robotics.aorilalabs.com` |
 
-## DNS — add at the registrar
+## DNS — at the registrar (Nicholas)
 
 | Domain | Type | Host / Name | Value |
 |--------|------|-------------|-------|
-| aorila.com | CNAME | `robotics` | `nbaldwin098.github.io` |
-| aorilalabs.com | CNAME | `robotics` | `nbaldwin098.github.io` |
+| aorila.com | CNAME | `robotics` | `aorila-robotics-site.onrender.com` |
+| aorilalabs.com | CNAME | `robotics` | `aorila-robotics-site.onrender.com` |
 
-After DNS propagates, GitHub issues the HTTPS certificate automatically
-(usually under an hour), then HTTPS gets enforced on both domains.
-
-## Render cleanup (one click)
-
-`robotics.aorila.com` was added as a custom domain on the **aorila-web**
-Render service — remove it there so traffic goes to the funnel, not the
-main site. Do not re-add these subdomains to Render.
+Render verifies DNS and issues the HTTPS certificates automatically.
 
 ## Waitlist backend
 
@@ -34,7 +26,9 @@ Full guide in `INTEGRATION.md`.
 
 ## Verify go-live
 
-1. Load both URLs on desktop + a phone.
+1. Load both URLs on desktop + a phone — expect "Zero setup. It just helps."
+   with the waitlist signup, NOT the "Robotics updates are not public yet."
+   placeholder.
 2. Submit a test email with `?utm_source=test&utm_medium=verify&utm_campaign=go-live`.
 3. Confirm the row in Supabase (`robot_waitlist` table), then **delete the test row**.
 
@@ -48,3 +42,6 @@ until real-hardware footage exists.
 
 - The robot story stays off `aorila.com` for now.
 - Do not add payment/reservation flows — counsel review gates that stage.
+- `nbaldwin098/robot-funnel-labs` is a spare mirror repo (unused — both
+  domains are served from `robot-funnel`).
+- GitHub Pages was disabled on both repos on 2026-09-15; Render is the host.
