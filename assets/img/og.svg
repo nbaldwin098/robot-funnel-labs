@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Aorila home robot — Zero setup. It just helps.">
+  <rect width="1200" height="630" fill="#10100f"/>
+  <rect x="0" y="0" width="1200" height="10" fill="#d8ff36"/>
+  <rect x="0" y="620" width="1200" height="10" fill="#ff5b22"/>
+  <circle cx="1020" cy="120" r="180" fill="#d8ff36" opacity="0.12"/>
+  <text x="90" y="150" font-family="Arial, sans-serif" font-size="34" font-weight="bold" letter-spacing="6" fill="#d8ff36">AORILA ROBOTICS</text>
+  <text x="90" y="300" font-family="Arial, sans-serif" font-size="104" font-weight="800" fill="#ffffff">Zero setup.</text>
+  <text x="90" y="415" font-family="Arial, sans-serif" font-size="104" font-weight="800" fill="#ffffff">It just helps.</text>
+  <text x="90" y="500" font-family="Arial, sans-serif" font-size="36" fill="#d8ff36">Target price $2,999 · Join the waitlist</text>
+  <text x="90" y="560" font-family="Arial, sans-serif" font-size="26" fill="#8a8a80">robotics.aorila.com</text>
+</svg>
